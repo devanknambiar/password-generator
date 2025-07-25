@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import './App.css'
 
 function App() {
@@ -6,6 +6,8 @@ function App() {
   const [numberAllowed, setNumberAllowed] = useState(false)
   const [charAllowed, setCharAllowed] = useState(false)
   const [pswd, setPswd] = useState("")
+
+  const pswdRef = useRef(null)
 
   const pswdGenerator = useCallback(() => {
     let pass = ""
@@ -29,6 +31,10 @@ function App() {
     pswdGenerator()
   }, [pswdGenerator])
 
+  const pswdCopy = () => {
+    navigator.clipboard.writeText(pswdRef.current.value)
+  }
+
   return (
     <>
       <div className="flex justify-center items-center min-h-screen">
@@ -42,11 +48,13 @@ function App() {
             type="text"
             placeholder='password'
             className='outline-none w-full bg-white px-2 py-3 cursor-not-allowed'
+            ref={pswdRef}
             value={pswd}
             readOnly
             />
             <button
             className='bg-blue-700 hover:bg-blue-500 active:text-black transition-colors text-white outline-none shrink-0 px-2 py-0.5'
+            onClick={pswdCopy}
             >Copy</button>
           </div>
           <div className="flex gap-x-2 text-sm mt-4 text-white">
